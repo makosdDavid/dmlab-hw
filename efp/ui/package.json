@@ -20,10 +20,12 @@
     "@angular/platform-browser-dynamic": "^19.2.0",
     "@angular/router": "^19.2.0",
     "@types/chart.js": "^2.9.41",
-    "chart.js": "^4.4.9",
+    "chart.js": "^3.9.1",
     "chartjs-adapter-date-fns": "^3.0.0",
     "date-fns": "^4.1.0",
     "ng2-charts": "^8.0.0",
+    "primeicons": "^7.0.0",
+    "primeng": "^19.1.2",
     "rxjs": "~7.8.0",
     "tslib": "^2.3.0",
     "zone.js": "~0.15.0"

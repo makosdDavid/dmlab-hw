@@ -186,7 +186,7 @@ def store_forecast(forecast_data: List[Dict[str, Any]]) -> int:
     if forecast_data:
         result = forecast_collection.insert_many(forecast_data)
         return len(result.inserted_ids)
-    return 0
+        return 0
     current_time = datetime.now().replace(year=2024)
     
     weather_descriptions = [

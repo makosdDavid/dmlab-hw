@@ -1,1 +1,265 @@
-<p>dashboard works!</p>
+<div class="dashboard-container">
+  <h1>Energy Consumption Forecast Dashboard</h1>
+
+  <!-- City Selector -->
+  <div class="city-selector">
+    <label for="city-select">Select City:</label>
+    <select
+      id="city-select"
+      [value]="selectedCity"
+      (change)="changeCity($event)"
+    >
+      <option value="athens">Athens</option>
+      <option value="thessaloniki">Thessaloniki</option>
+      <option value="patras">Patras</option>
+      <option value="heraklion">Heraklion</option>
+    </select>
+  </div>
+
+  @if (loading) {
+  <div class="loading">
+    <p>Loading data...</p>
+  </div>
+  } @else {
+  <div class="data-grid">
+    <p-card header="Current Weather" styleClass="weather-card">
+      @if (weatherData) {
+      <div class="weather-data">
+        <div class="weather-metric">
+          <span class="label">Temperature</span>
+          <span class="value">{{ weatherData.temperature }}°C</span>
+        </div>
+        <div class="weather-metric">
+          <span class="label">Humidity</span>
+          <span class="value">{{ weatherData.humidity }}%</span>
+        </div>
+        <div class="weather-metric">
+          <span class="label">Wind Speed</span>
+          <span class="value">{{ weatherData.wind_speed }} km/h</span>
+        </div>
+        <div class="weather-metric">
+          <span class="label">Cloud Cover</span>
+          <span class="value">{{ weatherData.cloud_cover }}%</span>
+        </div>
+        <div class="weather-metric">
+          <span class="label">Description</span>
+          <span class="value">{{ weatherData.description }}</span>
+        </div>
+      </div>
+      } @else {
+      <p>No weather data available</p>
+      }
+    </p-card>
+
+    <p-card header="Solar Panel Production" styleClass="solar-card">
+      @if (solarData) {
+      <div class="solar-data">
+        <div class="solar-metric">
+          <span class="label">Energy Produced</span>
+          <span class="value">{{ solarData.energy_produced }} kWh</span>
+        </div>
+        <div class="solar-metric">
+          <span class="label">Efficiency</span>
+          <span class="value">{{ solarData.efficiency }}%</span>
+        </div>
+        <div class="solar-metric">
+          <span class="label">Panel Temperature</span>
+          <span class="value">{{ solarData.panel_temperature }}°C</span>
+        </div>
+        <div class="solar-metric">
+          <span class="label">Solar Irradiance</span>
+          <span class="value">{{ solarData.solar_irradiance }} W/m²</span>
+        </div>
+        <div class="solar-metric">
+          <span class="label">Status</span>
+          <span class="value">{{ solarData.status }}</span>
+        </div>
+      </div>
+      } @else {
+      <p>No solar data available</p>
+      }
+    </p-card>
+  </div>
+
+  <p-card header="Energy Consumption Forecast" styleClass="forecast-card">
+    <div class="forecast-description">
+      <p>
+        24-hour energy consumption forecast based on weather conditions and
+        solar production patterns.
+      </p>
+      <p>
+        Showing predicted values for:
+        <strong>{{ selectedCity | titlecase }}</strong>
+      </p>
+    </div>
+    @if (forecastData.length > 0) {
+    <p-chart type="line" [data]="chartData" [options]="chartOptions"></p-chart>
+    } @else {
+    <div class="no-data-message">
+      <p>
+        No forecast data available. Please refresh data to generate forecasts.
+      </p>
+    </div>
+    }
+  </p-card>
+
+  <div class="spacer"></div>
+
+  <!-- Forecast Accuracy -->
+  <p-card header="Forecast Accuracy" styleClass="accuracy-card">
+    <div class="forecast-description">
+      <p>
+        Historical accuracy of our forecasting models compared to actual energy
+        consumption.
+      </p>
+    </div>
+    <div class="forecast-periods">
+      <div class="forecast-period" [class.active]="forecastPeriod === 'day'">
+        <button
+          pButton
+          type="button"
+          label="24 Hours"
+          (click)="setForecastPeriod('day')"
+          aria-label="Show 24 hour forecast accuracy"
+          class="p-button-raised"
+        ></button>
+        <div class="accuracy-value">{{ getAccuracyForPeriod("day") }}%</div>
+      </div>
+      <div class="forecast-period" [class.active]="forecastPeriod === 'week'">
+        <button
+          pButton
+          type="button"
+          label="Week"
+          (click)="setForecastPeriod('week')"
+          aria-label="Show weekly forecast accuracy"
+          class="p-button-raised"
+        ></button>
+        <div class="accuracy-value">{{ getAccuracyForPeriod("week") }}%</div>
+      </div>
+      <div class="forecast-period" [class.active]="forecastPeriod === 'month'">
+        <button
+          pButton
+          type="button"
+          label="Month"
+          (click)="setForecastPeriod('month')"
+          aria-label="Show monthly forecast accuracy"
+          class="p-button-raised"
+        ></button>
+        <div class="accuracy-value">{{ getAccuracyForPeriod("month") }}%</div>
+      </div>
+      <div class="forecast-period" [class.active]="forecastPeriod === 'year'">
+        <button
+          pButton
+          type="button"
+          label="Year"
+          (click)="setForecastPeriod('year')"
+          aria-label="Show yearly forecast accuracy"
+          class="p-button-raised"
+        ></button>
+        <div class="accuracy-value">{{ getAccuracyForPeriod("year") }}%</div>
+      </div>
+    </div>
+  </p-card>
+
+  <div class="spacer"></div>
+
+  <!-- Statistics -->
+  <p-card header="Energy Statistics" styleClass="statistics-card">
+    <div class="statistics-grid">
+      <div class="statistic-item">
+        <div class="statistic-label">Daily Avg. Consumption</div>
+        <div class="statistic-value">{{ getDailyAvgConsumption() }} kWh</div>
+      </div>
+      <div class="statistic-item">
+        <div class="statistic-label">Monthly Saving</div>
+        <div class="statistic-value">{{ getMonthlySaving() }} kWh</div>
+      </div>
+      <div class="statistic-item">
+        <div class="statistic-label">Efficiency Trend</div>
+        <div class="statistic-value">{{ getEfficiencyTrend() }}</div>
+      </div>
+      <div class="statistic-item">
+        <div class="statistic-label">CO2 Reduction</div>
+        <div class="statistic-value">{{ getCO2Reduction() }} kg</div>
+      </div>
+    </div>
+  </p-card>
+
+  <div class="spacer"></div>
+
+  <p-card
+    header="Predictions Based on Forecast Data"
+    styleClass="predictions-card"
+  >
+    <div class="forecast-description">
+      <p>
+        These predictions are based on weather and energy consumption patterns
+        and are updated regularly.
+      </p>
+    </div>
+    <p-tabView [(activeIndex)]="activePredictionTab">
+      <p-tabPanel header="For Engineers">
+        <div class="prediction-content">
+          <div class="prediction-metric">
+            <span class="label">Panel Efficiency</span>
+            <span class="value">{{ engineerPredictions.efficiency }}%</span>
+          </div>
+          <div class="prediction-metric">
+            <span class="label">Recommended Maintenance</span>
+            <span class="value">{{ engineerPredictions.maintenance }}</span>
+          </div>
+          <div class="prediction-metric">
+            <span class="label">Recommendation</span>
+            <span class="value">{{ engineerPredictions.recommendation }}</span>
+          </div>
+        </div>
+      </p-tabPanel>
+
+      <p-tabPanel header="For Insurance Companies">
+        <div class="prediction-content">
+          <div class="prediction-metric">
+            <span class="label">Risk Factor</span>
+            <span class="value">{{ insurancePredictions.riskFactor }}/10</span>
+          </div>
+          <div class="prediction-metric">
+            <span class="label">Recommended Coverage</span>
+            <span class="value">{{ insurancePredictions.coverage }}</span>
+          </div>
+          <div class="prediction-metric">
+            <span class="label">Recommendation</span>
+            <span class="value">{{ insurancePredictions.recommendation }}</span>
+          </div>
+        </div>
+      </p-tabPanel>
+
+      <p-tabPanel header="For Tourists">
+        <div class="prediction-content">
+          <div class="prediction-metric">
+            <span class="label">Optimal Visiting Period</span>
+            <span class="value">{{ touristPredictions.optimalPeriod }}</span>
+          </div>
+          <div class="prediction-metric">
+            <span class="label">Weather Comfort Index</span>
+            <span class="value">{{ touristPredictions.comfortIndex }}/10</span>
+          </div>
+          <div class="prediction-metric">
+            <span class="label">Recommendation</span>
+            <span class="value">{{ touristPredictions.recommendation }}</span>
+          </div>
+        </div>
+      </p-tabPanel>
+    </p-tabView>
+  </p-card>
+
+  <div class="actions">
+    <button
+      class="p-button p-button-primary p-button-raised"
+      (click)="refreshData()"
+      title="Refresh data from server"
+    >
+      <i class="pi pi-refresh" style="margin-right: 8px"></i>
+      Refresh Data
+    </button>
+  </div>
+  }
+</div>
