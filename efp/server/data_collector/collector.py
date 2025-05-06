@@ -13,7 +13,7 @@ OPENWEATHER_API_KEY = os.getenv("OPENWEATHER_API_KEY")
 OPENWEATHER_API_URL = "http://api.openweathermap.org/data/2.5/weather"
 OPENWEATHER_CITY_ID = os.getenv("OPENWEATHER_CITY_ID", 3054643)
 MONGO_URI = os.getenv("MONGO_URI", "mongodb://localhost:27017/")
-MONGO_DB_NAME = os.getenv("MONGO_DB_NAME", "efp_db")
+MONGO_DB_NAME = os.getenv("MONGO_DB_NAME", "dmlab")
 MONGO_DB_PASSWORD = os.getenv("MONGO_DB_PASSWORD")
 
 if "<db_password>" in MONGO_URI and MONGO_DB_PASSWORD:
@@ -72,30 +72,33 @@ def estimate_solar_irradiance(weather_data):
     """
     Estimate solar irradiance based on cloud cover and time of day.
     """
-    # Get cloud cover percentage (0-100)
     cloud_cover = weather_data.get('clouds', {}).get('all', 0)
     
     now = datetime.now()
     hour = now.hour
     
-    # Rough time-of-day factor (0.0 to 1.0)
-    # Max at noon (12), zero at night
-    if hour < 6 or hour > 18:  # Night time
+    if hour < 6 or hour > 18:
         time_factor = 0.0
     else:
         time_factor = math.sin(math.pi * (hour - 6) / 12)
     
-    # max irradiance (1000 W/m²) * time factor * cloud factor
     max_irradiance = 1000
-    cloud_factor = 1 - (cloud_cover / 100)
     
-    return int(max_irradiance * time_factor * cloud_factor)
+    min_cloud_factor = 0.2  
+    cloud_factor = max(min_cloud_factor, 1 - (cloud_cover / 100))
+    
+    base_irradiance = int(max_irradiance * time_factor * cloud_factor)
+    
+    if 6 <= hour <= 18 and base_irradiance < 50 and time_factor > 0.2:
+        base_irradiance = 50 + int(time_factor * 100)
+    
+    return base_irradiance
 
 def simulate_solar_panel_data():
     """
     Simulate solar panel production based on latest weather data.
     """
-    # Get the most recent weather data
+    # Get the latest weather data
     latest_weather = weather_collection.find_one(sort=[('datetime', -1)])
     
     if not latest_weather:
@@ -117,7 +120,17 @@ def simulate_solar_panel_data():
     
     # Calculate production
     standard_test_irradiance = 1000  # W/m²
-    production = (irradiance / standard_test_irradiance) * system_capacity * adjusted_efficiency
+    
+    min_daytime_production = 0.1
+    hour = datetime.now().hour
+    is_daytime = 6 <= hour <= 18
+    
+    raw_production = (irradiance / standard_test_irradiance) * system_capacity * adjusted_efficiency
+    
+    if is_daytime and raw_production < min_daytime_production and irradiance > 0:
+        production = min_daytime_production + (irradiance / 1000)
+    else:
+        production = raw_production
     
     # Assume 60% of production is fed back to the grid
     feed_in = production * 0.6
@@ -127,8 +140,7 @@ def simulate_solar_panel_data():
         'production': round(production, 2),
         'feed_in': round(feed_in, 2)
     }
-    
-    # Save to MongoDB
+
     result = solar_collection.insert_one(solar_data)
     
     #testing print
@@ -148,9 +160,8 @@ def main():
         
         if weather_data:
             solar_data = simulate_solar_panel_data()
-        
-        # In a production system, we would use a proper scheduler
-        collection_interval = 60  # seconds (1 minute for testing)
+      
+        collection_interval = 60  
         #testing print
         print(f"Waiting {collection_interval} seconds before next collection...")
         time.sleep(collection_interval)

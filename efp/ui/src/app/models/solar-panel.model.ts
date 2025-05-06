@@ -1,6 +1,9 @@
-export interface SolarPanelData {
+export interface SolarPanel {
   _id?: string;
-  datetime: Date;
-  production: number;
-  feed_in: number;
+  datetime: string;
+  energy_produced: number;
+  efficiency: number;
+  panel_temperature: number;
+  solar_irradiance: number;
+  status: string;
 }

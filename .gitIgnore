@@ -1,6 +1,9 @@
 .env
 node_modules
 
-.tutorial
-.task
-.prompt
+.task.txt
+.prompt.txt
+detailed_task.txt
+ffs.txt
+full_task.txt
+goals.txt

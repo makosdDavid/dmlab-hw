@@ -2,42 +2,69 @@ version: '3.8'
 
 services:
   mongodb:
-    image: mongo:7.0
+    image: mongo:latest
     container_name: efp-mongodb
     ports:
       - '27017:27017'
     volumes:
       - mongodb_data:/data/db
-    restart: unless-stopped
+    networks:
+      - efp-network
 
   data-collector:
-    build: ./backend/data_collector
+    build:
+      context: ./server/data_collector
     container_name: efp-collector
+    restart: unless-stopped
     depends_on:
       - mongodb
     env_file:
-      - .env
-    restart: unless-stopped
+      - ./.env
+    environment:
+      - MONGO_URI=mongodb://mongodb:27017/
+      - MONGO_DB_NAME=dmlab
+    networks:
+      - efp-network
 
   data-processor:
-    build: ./backend/data_processor
+    build:
+      context: ./server/data_processor
     container_name: efp-processor
+    restart: unless-stopped
     depends_on:
       - mongodb
+      - data-collector
     env_file:
-      - .env
-    restart: unless-stopped
+      - ./.env
+    environment:
+      - MONGO_URI=mongodb://mongodb:27017/
+      - MONGO_DB_NAME=dmlab
+    networks:
+      - efp-network
 
   api:
-    build: ./backend/api
+    build:
+      context: ./server/api
     container_name: efp-api
+    restart: unless-stopped
     ports:
       - '8000:8000'
     depends_on:
       - mongodb
+      - data-processor
     env_file:
-      - .env
-    restart: unless-stopped
+      - ./.env
+    environment:
+      - MONGO_URI=mongodb://mongodb:27017/
+      - MONGO_DB_NAME=dmlab
+      - API_HOST=0.0.0.0
+      - API_PORT=8000
+    networks:
+      - efp-network
+
+networks:
+  efp-network:
+    driver: bridge
 
 volumes:
   mongodb_data:
