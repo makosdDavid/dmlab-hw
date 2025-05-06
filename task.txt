@@ -1,0 +1,27 @@
+# Energy Consumption Forecast Project - Task Checklist
+
+## Completed Tasks
+- [x] Set up MongoDB Atlas connection
+- [x] Implement weather data collection from OpenWeatherMap API
+- [x] Implement solar panel data simulation
+- [x] Store weather and solar data in MongoDB
+- [x] Implement energy consumption forecast generation
+- [x] Store forecasts in MongoDB with timestamps
+- [x] Develop REST API (switched from FastAPI to Flask due to Python 3.13 compatibility issues)
+
+## Pending Tasks
+- [ ] Make location (city) dynamic instead of hardcoded (currently using OPENWEATHER_CITY_ID=3054643)
+- [ ] Improve solar production forecasting to ensure non-zero values during daytime
+- [ ] Set up Docker containers
+- [ ] Create Angular frontend
+- [ ] Implement interactive dashboard with charts
+- [ ] Add user authentication
+- [ ] Create documentation
+- [ ] Deploy the application
+
+## Notes
+- Current implementation uses MongoDB Atlas for cloud database storage
+- Forecasts are generated every minute (for testing purposes)
+- Weather data is collected from OpenWeatherMap API
+- Solar panel data is simulated based on weather conditions
+- REST API was implemented with Flask instead of FastAPI due to compatibility issues with Python 3.13 

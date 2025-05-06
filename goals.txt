@@ -1,0 +1,9 @@
+1. forecast the weather
+2. store forecasts and compare them to the real weather data this is a % called accuracy
+3. get prev data and make a calculation (forecast) for a day, a month, a year, 5 years, 10 years and add the accuracy var 
+4. based on the data above make: 
+    - prediction for the enginers of the solarpanels
+    - prediction for insurance companies 
+    - prediction for tourists when is optimal to visit places
+    
+      

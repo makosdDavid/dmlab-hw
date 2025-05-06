@@ -1,0 +1,43 @@
+version: '3.8'
+
+services:
+  mongodb:
+    image: mongo:7.0
+    container_name: efp-mongodb
+    ports:
+      - '27017:27017'
+    volumes:
+      - mongodb_data:/data/db
+    restart: unless-stopped
+
+  data-collector:
+    build: ./backend/data_collector
+    container_name: efp-collector
+    depends_on:
+      - mongodb
+    env_file:
+      - .env
+    restart: unless-stopped
+
+  data-processor:
+    build: ./backend/data_processor
+    container_name: efp-processor
+    depends_on:
+      - mongodb
+    env_file:
+      - .env
+    restart: unless-stopped
+
+  api:
+    build: ./backend/api
+    container_name: efp-api
+    ports:
+      - '8000:8000'
+    depends_on:
+      - mongodb
+    env_file:
+      - .env
+    restart: unless-stopped
+
+volumes:
+  mongodb_data:

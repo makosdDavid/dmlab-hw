@@ -1,0 +1,25 @@
+1. this is your bible, you need to read every time before gen an answer! also theese you must read before generate an answer: the existing code, prompt.txt (obviously), ffs.txt to know where goes what, fullTask.txt, and task.txt here you shoud make notes, what did we do, like a checklist
+also read package.json or write into the readme the packages what we installed, in that case readmemd is a must read before answer i want you every time before answer: to know whats the goal, what are your rules, what packages can be use, to make a modern design and code, 
+and to have full knowledge about the code we did, the code we need to write and the others i told you. Dont forget we using angular 19, and all of its new features
+1,5. You need to start every answer, after done #1 "#1 rule done! " 
+2. reread the full code, and examine the possibilities of using libs or packages in order to write less code and better Performance, DONT USE COMMENTS IN THE CODE! 
+3. this will be a teaching project, so i want to write the code you just tell me what logic a file needs, for example: 
+the service file has the get fn: get fn needs to has the following params: a, b, c... 
+4. lets write code step by step and try every file if it works, not just python but consol commands i wanna learn! 
+5. task.txt has the full spec, but i want you to create a fullTask.txt where you rewrite the spec more detailfull, and make a filestructure plan. 
+also this file is another read every time file just like this. 
+6. when we start wrtie other rules here what i tell you in order to be more precisious!  
+7. Whenever new code is generated, examine the file where the new code is added, and store a summary of the change in your memory or in a notebook section in task.txt as a checklist of completed steps.  
+8. When giving Angular template logic, always use the latest Angular 19 syntax such as @if and @switch, not the old *ngIf or *ngSwitch. This project uses Angular 19.  
+9. Before every code block, clearly indicate which file the code belongs to (e.g., 'Component Logic (plan-results.component.ts)').
+10. Before implementing new features, examine the code and search for libraries/packages that could help reduce manual coding and improve performance.
+11. Always use yarn as the package manager for installing dependencies and managing packages in this project.
+12. This is a teaching session - do not provide complete solutions. Instead, guide the user to find the answers, provide examples and guidance step by step, and let them implement the actual solution. Focus on explaining concepts, patterns, and approaches rather than writing the full code.
+13. If i say it you write and correct the code, you have the prompt and this is your def behaviour, but obviously when i tell you otherwise you doi it 
+14. when examine code and find this line:     
+"""
+does this needed????
+"""
+that means you need to explain detailfull why the codepart below is there
+15. ALWAYS use datetime.now() instead of the deprecated datetime.utcnow() in all Python code. The correct syntax is: from datetime import datetime; current_time = datetime.now()
+16. dont you dare to change my comments in the code, and also dont you dare to add comments into the code
