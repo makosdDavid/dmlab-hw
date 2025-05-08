@@ -1,0 +1,107 @@
+.metric-card {
+  background-color: white;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  padding: 1rem;
+  display: flex;
+  align-items: center;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.metric-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.metric-icon {
+  font-size: 2rem;
+  margin-right: 1rem;
+  color: #1976d2;
+}
+
+.metric-content {
+  flex-grow: 1;
+}
+
+.metric-title {
+  font-size: 0.9rem;
+  color: #666;
+  margin-bottom: 0.3rem;
+}
+
+.metric-value {
+  font-size: 1.5rem;
+  font-weight: 600;
+  color: #333;
+}
+
+.metric-unit {
+  font-size: 1rem;
+  color: #666;
+  margin-left: 0.3rem;
+}
+
+.metric-trend {
+  display: flex;
+  align-items: center;
+  margin-top: 0.5rem;
+  font-size: 0.9rem;
+}
+
+.trend-icon {
+  margin-right: 0.3rem;
+  font-weight: bold;
+}
+
+.trend-icon.up {
+  color: #4caf50;
+}
+
+.trend-icon.down {
+  color: #f44336;
+}
+
+.trend-icon.neutral {
+  color: #ff9800;
+}
+
+.trend-value {
+  color: #666;
+}
+
+/* Color variations */
+.metric-card.color-blue {
+  border-left: 4px solid #1976d2;
+}
+
+.metric-card.color-green {
+  border-left: 4px solid #4caf50;
+}
+
+.metric-card.color-red {
+  border-left: 4px solid #f44336;
+}
+
+.metric-card.color-orange {
+  border-left: 4px solid #ff9800;
+}
+
+.metric-card.color-purple {
+  border-left: 4px solid #9c27b0;
+}
+
+@media (max-width: 768px) {
+  .metric-card {
+    flex-direction: column;
+    text-align: center;
+  }
+  
+  .metric-icon {
+    margin-right: 0;
+    margin-bottom: 0.5rem;
+  }
+  
+  .metric-trend {
+    justify-content: center;
+  }
+} 

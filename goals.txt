@@ -6,4 +6,22 @@
     - prediction for insurance companies 
     - prediction for tourists when is optimal to visit places
     
-      
+Listen here you shithead:
+- SERVER:
+ALL BE process is need to: get the data, store the data to the DB, and calculate ALL the logic
+ALSO i want 10 year data for the calculations to makje VALID predictions (10year data but not stored in the db)
+I WANT DYNAMIC Cities there is a city id on open weather  get 10 VALID city ID and store it in a list, that will be the dynamic part ON THE FE
+- UI: 
+What you have done this ui so far is so disgusting i cant even have words
+THE UI needs to look like:  
+- header: select city and refresh data button
+- main: one card with 3 tab. common on every tab: a CHART what is working tabs: energy, insurance, tourist info 
+every tab has its on chart and the accuracy and the actual weather and the next day weather
+- energy tab: after the chart and the eaccuracy other solar panel shit what comes from BE 
+- insurance tab: extreme weather possibility, risk factor, predictions for 1, 5, 10 year and some insurance caluculable bullshit
+- tourist, chart shows a year and wich times are sunny, rainy when the weather is optimal to visit the city
+
+IF something not calculated yet on backend DO it, dont you dare to hardcode a thing in my app! 
+
+
+

@@ -23,3 +23,5 @@ does this needed????
 that means you need to explain detailfull why the codepart below is there
 15. ALWAYS use datetime.now() instead of the deprecated datetime.utcnow() in all Python code. The correct syntax is: from datetime import datetime; current_time = datetime.now()
 16. dont you dare to change my comments in the code, and also dont you dare to add comments into the code
+
+UPDATE BECAUSE YOU ARE A PICE OF SHIT EVERY ISNTRUCTION FOR THE TEACHING AND LEARNING IS SUSPENDED YOU WRTIE EVERY CODE!!!! 

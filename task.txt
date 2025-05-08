@@ -8,13 +8,14 @@
 - [x] Implement energy consumption forecast generation
 - [x] Store forecasts in MongoDB with timestamps
 - [x] Develop REST API (switched from FastAPI to Flask due to Python 3.13 compatibility issues)
+- [x] Make location (city) dynamic instead of hardcoded
+- [x] Improve solar production forecasting to ensure non-zero values during daytime
+- [x] Create Angular frontend
+- [x] Implement interactive dashboard with charts
+- [x] Implement specialized prediction views for engineers, insurance companies, and tourists
 
 ## Pending Tasks
-- [ ] Make location (city) dynamic instead of hardcoded (currently using OPENWEATHER_CITY_ID=3054643)
-- [ ] Improve solar production forecasting to ensure non-zero values during daytime
 - [ ] Set up Docker containers
-- [ ] Create Angular frontend
-- [ ] Implement interactive dashboard with charts
 - [ ] Add user authentication
 - [ ] Create documentation
 - [ ] Deploy the application
@@ -25,3 +26,6 @@
 - Weather data is collected from OpenWeatherMap API
 - Solar panel data is simulated based on weather conditions
 - REST API was implemented with Flask instead of FastAPI due to compatibility issues with Python 3.13 
+- Added dynamic location support using either city ID or city name + country code
+- Improved solar irradiance estimation and production simulation
+- Added specialized prediction views for different user types (engineers, insurance companies, tourists) 
